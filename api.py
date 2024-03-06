@@ -1,4 +1,6 @@
 from datetime import datetime
+import json
+from urllib import response
 from airflow.models import DAG
 from airflow.providers.http.sensors.http import HttpSensor
 from airflow.providers.http.operators.http import SimpleHttpOperator
@@ -18,6 +20,15 @@ with DAG(
 
   )
 
+  tasks_get_posts=SimpleHttpOperator(
+    task_id='get_posts',
+    http_conn_id='api_posts',
+    endpoint='posts/',
+    method='GET',
+    response_filter=lambda response:json.loads(response.txt),
+    log_response=True
+  )
+# airflow tasks test dag_id task_id 2024-3-1
 
 
 
